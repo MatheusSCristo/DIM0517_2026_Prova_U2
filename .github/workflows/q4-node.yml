@@ -24,6 +24,9 @@ jobs:
       - name: Check
         run: node --check src/index.js
 
+      - name: testes
+        run : npm test
+
   docker:
     needs: build
     runs-on: ubuntu-latest
