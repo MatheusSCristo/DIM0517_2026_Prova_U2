@@ -3,11 +3,12 @@ name: Node
 on:
   push:
     branches:
-      -'feature/**'
+      - 'feature/**'
     paths:
-      -'src/**'
-      -'Dockerfile.**'
-      -'node_modules/**'
+      - 'node/src/**'
+      - 'node/Dockerfile'
+      - 'node/package.json'
+      - 'node/package-lock.json'
 
 jobs:
   build:
