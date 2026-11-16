@@ -1,5 +1,11 @@
 name: Node
 
+on:
+  pull_request:
+    types:
+      - assigned 
+    branches:
+      -'development'
 
 jobs:
   build:
@@ -9,16 +15,30 @@ jobs:
     defaults:
       run:
         working-directory: node
+       
+      
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-
+          node-version: "22" 
       - name: Install
         run: npm install
 
       - name: Check
         run: node --check src/index.js
-
+        
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: node
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: "create-tag"
+        run: docker build -t build-${{ github.run_id }}
