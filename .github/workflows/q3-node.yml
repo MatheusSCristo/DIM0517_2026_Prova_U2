@@ -3,9 +3,9 @@ name: Node
 on:
   pull_request:
     types:
-      - assigned 
+      - closed
     branches:
-      -'development'
+      - 'develop'
 
 jobs:
   build:
@@ -15,8 +15,6 @@ jobs:
     defaults:
       run:
         working-directory: node
-       
-      
     steps:
       - uses: actions/checkout@v4
 
@@ -28,17 +26,16 @@ jobs:
 
       - name: Check
         run: node --check src/index.js
-        
   create-tag:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    defaults:
-      run:
-        working-directory: node
-    needs: build
     steps:
       - uses: actions/checkout@v4
-      
-      - name: "create-tag"
-        run: docker build -t build-${{ github.run_id }}
+
+      - name: Create tag
+        run: |
+          TAG="build-${{ github.run_id }}"
+          git tag "$TAG"
+          git push origin "$TAG"
